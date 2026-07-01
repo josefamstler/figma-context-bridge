@@ -5,7 +5,7 @@ description: Use when the user provides a Figma URL and asks to inspect, impleme
 
 # Figma Design Implementation
 
-Use this skill when the user provides a Figma URL and asks to create, implement, recreate, update, inspect, or match a frontend component/page/screen.
+Use this skill in {{TOOL_NAME}} when the user provides a Figma URL and asks to create, implement, recreate, update, inspect, or match a frontend component/page/screen.
 
 ## Strict Figma Matching
 
@@ -71,9 +71,13 @@ Default output is Markdown optimized for implementation. JSON output is availabl
 - `Asset Candidates` should not be exported blindly.
 - Absolute `x` and `y` coordinates are useful for relative placement, but should rarely become absolute CSS.
 
+## {{TOOL_NAME}} Notes
+
+{{TOOL_RESTART_NOTE}}
+
 ## If The Helper Fails
 
-- Missing token: ask the user to set `FIGMA_TOKEN`.
+- Missing token: ask the user to set `FIGMA_TOKEN` in `~/.config/figma-inspect/env`.
 - 403: explain that the token needs read access to the file.
 - Missing node ID: ask the user to copy a link to the selected frame/component when possible.
 - Very large output: rerun with a smaller selected node or lower `--depth`.

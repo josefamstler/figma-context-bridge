@@ -1,17 +1,17 @@
-# Figma OpenCode Integration
+# Figma AI Coding Integration
 
-Use Figma design links in OpenCode without running a background MCP server.
+Use Figma design links in OpenCode or Claude CLI without running a background MCP server.
 
 This project installs:
 
 - `figma-inspect`: a read-only Node/TypeScript CLI that fetches selected Figma nodes and summarizes them for frontend implementation.
-- `figma-design`: an OpenCode skill that automatically tells OpenCode to run `figma-inspect` before implementing UI from a Figma URL.
+- `figma-design`: a generated skill for either OpenCode or Claude CLI that tells the agent to run `figma-inspect` before implementing UI from a Figma URL.
 
 ## Requirements
 
 - Node.js 18 or newer
 - npm
-- OpenCode
+- OpenCode or Claude CLI/Claude Code
 - A Figma personal access token with read access to the target file
 
 If Node is installed through `nvm`, the installer and command wrapper try to load `~/.nvm/nvm.sh` automatically.
@@ -20,11 +20,66 @@ If Node is installed through `nvm`, the installer and command wrapper try to loa
 
 ```bash
 git clone <repo-url>
-cd figma-opencode-integration
+cd figma-context-bridge
 ./install.sh
 ```
 
-Then edit:
+The installer asks where to install the skill:
+
+```text
+? Install integration for:
+❯ OpenCode
+  Claude CLI
+```
+
+Use arrow keys and Enter.
+
+For non-interactive installs:
+
+```bash
+./install.sh --target=opencode
+./install.sh --target=claude
+```
+
+The installer always installs the shared `figma-inspect` command and token env file. It installs the skill only for the selected tool.
+
+## Installed Paths
+
+Shared CLI wrapper:
+
+```text
+~/.local/bin/figma-inspect
+```
+
+Token file:
+
+```text
+~/.config/figma-inspect/env
+```
+
+OpenCode skill:
+
+```text
+~/.config/opencode/skills/figma-design/SKILL.md
+```
+
+Claude CLI skill:
+
+```text
+~/.claude/skills/figma-design/SKILL.md
+```
+
+The source skill is maintained once as:
+
+```text
+skill/figma-design.SKILL.md.template
+```
+
+The installer injects tool-specific wording when it writes the final skill.
+
+## Token Setup
+
+Edit:
 
 ```text
 ~/.config/figma-inspect/env
@@ -38,18 +93,20 @@ export FIGMA_TOKEN="figd_your_token_here"
 
 Keep the quotes.
 
-Restart OpenCode after installation so it loads the skill.
+The installer does not overwrite an existing token file.
 
 ## Usage
 
-Inside any frontend project, ask OpenCode:
+Restart the selected tool after installation so it loads the skill.
+
+Inside any frontend project, ask:
 
 ```text
 Implement this component from Figma:
 https://www.figma.com/design/FILE_KEY/name?node-id=12-34
 ```
 
-OpenCode should:
+The agent should:
 
 1. Trigger the `figma-design` skill.
 2. Run `figma-inspect "<figma-url>"` automatically.
@@ -81,11 +138,11 @@ figma-inspect --raw "https://www.figma.com/design/FILE_KEY/name?node-id=12-34"
 
 ## Strict Figma Matching
 
-The installed OpenCode skill tells OpenCode to treat Figma as the source of truth.
+The installed skill tells the agent to treat Figma as the source of truth.
 
 It should not substitute different components unless the user explicitly says approximation, adaptation, or replacement is allowed.
 
-If Figma lists `Button / Primary`, OpenCode should search for the closest existing Button/Primary code component and use that instead of silently replacing it with an unrelated element.
+If Figma lists `Button / Primary`, the agent should search for the closest existing Button/Primary code component and use that instead of silently replacing it with an unrelated element.
 
 ## Token Security
 
@@ -122,25 +179,45 @@ git pull
 ./install.sh
 ```
 
-The installer does not overwrite an existing token file.
+Or update a specific tool non-interactively:
 
-Restart OpenCode after updating the skill.
+```bash
+./install.sh --target=opencode
+./install.sh --target=claude
+```
+
+Restart the selected tool after updating the skill.
 
 ## Uninstall
+
+Interactive uninstall:
 
 ```bash
 ./uninstall.sh
 ```
 
-This keeps the token file by default.
-
-To remove the token file too:
+Non-interactive uninstall:
 
 ```bash
-./uninstall.sh --remove-token-file
+./uninstall.sh --target=opencode
+./uninstall.sh --target=claude
 ```
 
-Restart OpenCode after uninstalling.
+By default, uninstall removes only the selected tool's skill and keeps the shared CLI/token file.
+
+Remove the CLI wrapper too:
+
+```bash
+./uninstall.sh --target=opencode --remove-cli
+```
+
+Remove the token file too:
+
+```bash
+./uninstall.sh --target=opencode --remove-token-file
+```
+
+Restart the selected tool after uninstalling.
 
 ## Troubleshooting
 
