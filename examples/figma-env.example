@@ -1,0 +1,3 @@
+# Copy this value into ~/.config/figma-inspect/env and replace the placeholder.
+# Keep the quotes.
+export FIGMA_TOKEN="paste_your_figma_token_here"
