@@ -6,13 +6,16 @@
   "bin": {
     "figma-inspect": "./dist/index.js"
   },
+  "packageManager": "pnpm@10.15.1",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "check": "tsc -p tsconfig.json --noEmit"
+    "build": "tsc -p tsconfig.build.json",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
-    "typescript": "^5.5.0"
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.9"
   },
   "engines": {
     "node": ">=18"

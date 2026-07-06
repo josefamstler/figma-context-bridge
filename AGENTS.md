@@ -10,15 +10,16 @@
 
 ## Commands
 
-- Install dependencies: `npm --prefix figma-inspect install`
-- Typecheck: `npm --prefix figma-inspect run check`
-- Build: `npm --prefix figma-inspect run build`
+- Install dependencies: `pnpm --dir figma-inspect install`
+- Typecheck: `pnpm --dir figma-inspect run check`
+- Test: `pnpm --dir figma-inspect test`
+- Build: `pnpm --dir figma-inspect run build`
 - Non-interactive install smoke path: `./install.sh --target=opencode` or `./install.sh --target=claude`
 - Non-interactive uninstall: `./uninstall.sh --target=opencode` or `./uninstall.sh --target=claude`
 
 ## Verification
 
-- There are no test or lint scripts currently; use `npm --prefix figma-inspect run check` and `npm --prefix figma-inspect run build`.
+- There is no lint script currently; use `pnpm --dir figma-inspect test`, `pnpm --dir figma-inspect run check`, and `pnpm --dir figma-inspect run build`.
 - The built CLI entrypoint is `figma-inspect/dist/index.js`, produced by `tsc`; `dist/` is ignored.
 - Manual CLI calls require `FIGMA_TOKEN` or `FIGMA_API_KEY`, usually loaded by the installed wrapper from `~/.config/figma-inspect/env`.
 
@@ -26,7 +27,7 @@
 
 - `install.sh` writes outside the repo: `~/.local/bin/figma-inspect`, `~/.config/figma-inspect/env`, and a tool-specific skill directory.
 - Use `--target=opencode` or `--target=claude` in scripts when running without an interactive TTY.
-- Installer requires Node.js >= 18 and npm; it tries to load `~/.nvm/nvm.sh` if Node/npm are missing.
+- Installer requires Node.js >= 18 and pnpm; it tries to load `~/.nvm/nvm.sh` if Node/pnpm are missing.
 - `uninstall.sh` keeps the CLI wrapper and token file unless passed `--remove-cli` or `--remove-token-file`.
 
 ## CLI Notes

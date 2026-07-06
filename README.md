@@ -10,7 +10,7 @@ This project installs:
 ## Requirements
 
 - Node.js 18 or newer
-- npm
+- pnpm
 - OpenCode or Claude CLI/Claude Code
 - A Figma personal access token with read access to the target file
 

@@ -22,7 +22,7 @@ for arg in "$@"; do
   esac
 done
 
-if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1; then
+if ! command -v node >/dev/null 2>&1 || ! command -v pnpm >/dev/null 2>&1; then
   if [ -s "$HOME/.nvm/nvm.sh" ]; then
     # shellcheck disable=SC1090
     source "$HOME/.nvm/nvm.sh"
@@ -34,8 +34,8 @@ if ! command -v node >/dev/null 2>&1; then
   exit 1
 fi
 
-if ! command -v npm >/dev/null 2>&1; then
-  echo "npm is required. Install npm or load nvm first." >&2
+if ! command -v pnpm >/dev/null 2>&1; then
+  echo "pnpm is required. Install pnpm or load nvm first." >&2
   exit 1
 fi
 
@@ -65,10 +65,10 @@ case "$TARGET" in
 esac
 
 echo "Installing figma-inspect dependencies..."
-npm --prefix "$CLI_DIR" install
+pnpm --dir "$CLI_DIR" install
 
 echo "Building figma-inspect..."
-npm --prefix "$CLI_DIR" run build
+pnpm --dir "$CLI_DIR" run build
 
 echo "Installing figma-inspect command to $BIN_PATH..."
 mkdir -p "$BIN_DIR"
