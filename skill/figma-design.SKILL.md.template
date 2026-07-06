@@ -58,6 +58,22 @@ figma-inspect --raw "<figma-url>"
 
 12. Run available format, lint, typecheck, or test commands when feasible.
 
+## When Work Is Blocked Or Failing
+
+If implementation, setup, tests, screenshot capture, or visual comparison fails in a way that is not immediately fixable, stop implementation and tell the user what happened. Do not keep making speculative changes or silently skip the failing step.
+
+Report:
+
+- The exact command, tool, or workflow step that failed.
+- The missing file, component, token, story, test harness, browser dependency, screenshot artifact, environment variable, or permission when known.
+- What you already tried.
+- The most likely cause.
+- The smallest useful options for resolving it.
+
+Ask the user how to proceed when the fix requires a product/design decision, adding new tooling, changing test strategy, updating baselines, replacing a missing component, or accepting a visual deviation.
+
+For component/browser screenshot tests, stop and ask for help if the implemented UI cannot be rendered, a required story/test target is missing, screenshots cannot be captured, Figma export fails, or the comparison cannot run reliably. Help the user resolve the blocker before continuing.
+
 ## Visual Comparison Workflow
 
 Use screenshot comparison as an implementation feedback loop, not just as a final check. The goal is to catch visual drift that code inspection misses.
@@ -80,7 +96,7 @@ figma-inspect --screenshot --output <artifact-dir>/figma.png "<figma-url>"
 
 7. Compare the Figma and implementation screenshots using existing project visual regression tooling when available. If no automated visual diff exists, inspect the artifacts side by side and use the comparison to guide fixes.
 
-8. If the screenshots reveal mismatches, adjust the implementation and rerun the same comparison flow. Repeat until the UI reasonably matches Figma or a blocker prevents further progress.
+8. If the screenshots reveal mismatches, adjust the implementation and rerun the same comparison flow. Repeat until the UI reasonably matches Figma. If a blocker prevents further progress, stop, explain the issue using the blocked-work guidance above, and work with the user to resolve it before continuing.
 
 9. Keep useful component tests created or updated during the task.
 
