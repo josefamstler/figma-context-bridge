@@ -8,6 +8,17 @@ export type CliOptions = {
   depth?: number
   json: boolean
   raw: boolean
+  screenshot: boolean
+  output?: string
+  format: ScreenshotFormat
+  scale?: number
+}
+
+export type ScreenshotFormat = "png" | "jpg" | "svg" | "pdf"
+
+export type FigmaImagesResponse = {
+  err?: string | null
+  images: Record<string, string | null>
 }
 
 export type FigmaPaint = {

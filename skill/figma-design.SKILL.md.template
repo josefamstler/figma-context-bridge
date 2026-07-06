@@ -1,6 +1,6 @@
 ---
 name: figma-design
-description: Use when the user provides a Figma URL and asks to inspect, implement, recreate, match, update, or build frontend UI from the design. Strictly fetch and follow Figma via figma-inspect before coding; do not substitute different components unless explicitly allowed.
+description: Use when the user provides a Figma URL and asks to inspect, implement, recreate, match, update, or build frontend UI from the design. Strictly fetch and follow Figma via figma-inspect before coding, then compare the implemented UI against a Figma screenshot with the project's best available component/browser visual test setup; do not substitute different components unless explicitly allowed.
 ---
 
 # Figma Design Implementation
@@ -54,7 +54,39 @@ figma-inspect --raw "<figma-url>"
 
 10. Implement the requested UI using the project’s existing styling conventions while staying faithful to Figma.
 
-11. Run available format, lint, typecheck, or test commands when feasible.
+11. Run the visual comparison workflow below before final verification whenever the Figma URL includes, or the user can provide, a selected frame/component `node-id`.
+
+12. Run available format, lint, typecheck, or test commands when feasible.
+
+## Visual Comparison Workflow
+
+Use screenshot comparison as an implementation feedback loop, not just as a final check. The goal is to catch visual drift that code inspection misses.
+
+1. Before the first comparison setup or run for the current task, inspect the target project for existing screenshot-capable component, browser, or visual regression tooling. Examples include Playwright, Cypress Component Testing, Storybook screenshot tooling, Chromatic, Loki, WebdriverIO, Puppeteer, Vitest Browser Mode, Jest image snapshot setups, or project-specific visual regression scripts. These are examples, not a fixed list.
+
+2. Recommend the best detected tool and ask the user to confirm what framework/tool to use before executing comparison setup or runs. If multiple suitable tools exist, prefer the one already used for component or visual tests. If no suitable tool exists, recommend a minimal option that fits the project's stack and ask before adding or using it.
+
+3. After the user confirms the comparison tool for this task, reuse that same choice for all screenshot comparison reruns during the implementation iteration. Do not ask again unless the chosen tool is blocked and a different tool is needed.
+
+4. Export the selected Figma frame/component screenshot:
+
+```bash
+figma-inspect --screenshot --output <artifact-dir>/figma.png "<figma-url>"
+```
+
+5. If the Figma URL does not include `node-id`, ask the user for a link to the selected frame/component before attempting screenshot comparison.
+
+6. Render the implemented component/page using the confirmed project-appropriate component/browser test tool and capture an implementation screenshot.
+
+7. Compare the Figma and implementation screenshots using existing project visual regression tooling when available. If no automated visual diff exists, inspect the artifacts side by side and use the comparison to guide fixes.
+
+8. If the screenshots reveal mismatches, adjust the implementation and rerun the same comparison flow. Repeat until the UI reasonably matches Figma or a blocker prevents further progress.
+
+9. Keep useful component tests created or updated during the task.
+
+10. Clean up temporary Figma and implementation screenshot files before finishing. Do not leave ad-hoc screenshots in the repo. If the project's visual regression setup expects committed baseline snapshot images, ask the user before keeping or updating those images.
+
+11. If the user declines visual test setup or comparison, continue the implementation and mention in the final response that screenshot comparison was skipped by user choice.
 
 ## Figma Helper Notes
 
@@ -81,3 +113,11 @@ Default output is Markdown optimized for implementation. JSON output is availabl
 - 403: explain that the token needs read access to the file.
 - Missing node ID: ask the user to copy a link to the selected frame/component when possible.
 - Very large output: rerun with a smaller selected node or lower `--depth`.
+
+## Final Response
+
+- Mention any intentional deviation from Figma.
+- Mention which comparison tool/framework was selected when visual comparison was attempted.
+- State whether screenshot comparison was completed, skipped, or blocked.
+- Confirm that temporary screenshot artifacts were cleaned up when they were created.
+- Mention unresolved visual differences or blockers.
