@@ -176,17 +176,19 @@ Then restart your terminal.
 
 ```bash
 git pull
-./install.sh
+./update.sh
 ```
 
 Or update a specific tool non-interactively:
 
 ```bash
-./install.sh --target=opencode
-./install.sh --target=claude
+./update.sh --target=opencode
+./update.sh --target=claude
 ```
 
-Restart the selected tool after updating the skill.
+The updater rebuilds `figma-inspect`, replaces the selected tool's generated skill, and keeps your token file unchanged.
+
+Restart the selected tool after updating.
 
 ## Uninstall
 

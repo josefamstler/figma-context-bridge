@@ -2,7 +2,7 @@
 
 ## Repo Shape
 
-- Root scripts install/uninstall a local `figma-inspect` CLI and generated `figma-design` skill.
+- Root scripts install/update/uninstall a local `figma-inspect` CLI and generated `figma-design` skill.
 - The TypeScript CLI package lives in `figma-inspect/`; there is no root `package.json`.
 - The installed skill is generated from `skill/figma-design.SKILL.md.template`; edit the template, not files under `~/.config/opencode/skills/` or `~/.claude/skills/`.
 - `figma-inspect/src/index.ts` is only the CLI entrypoint; command flows live in `figma-inspect/src/commands/`.
@@ -15,6 +15,7 @@
 - Test: `pnpm --dir figma-inspect test`
 - Build: `pnpm --dir figma-inspect run build`
 - Non-interactive install smoke path: `./install.sh --target=opencode` or `./install.sh --target=claude`
+- Non-interactive update smoke path: `./update.sh --target=opencode` or `./update.sh --target=claude`
 - Non-interactive uninstall: `./uninstall.sh --target=opencode` or `./uninstall.sh --target=claude`
 
 ## Verification
@@ -28,6 +29,7 @@
 - `install.sh` writes outside the repo: `~/.local/bin/figma-inspect`, `~/.config/figma-inspect/env`, and a tool-specific skill directory.
 - Use `--target=opencode` or `--target=claude` in scripts when running without an interactive TTY.
 - Installer requires Node.js >= 18 and pnpm; it tries to load `~/.nvm/nvm.sh` if Node/pnpm are missing.
+- `update.sh` rebuilds the CLI and replaces the selected generated skill while keeping the token file unchanged.
 - `uninstall.sh` keeps the CLI wrapper and token file unless passed `--remove-cli` or `--remove-token-file`.
 
 ## CLI Notes

@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 import process from "node:process"
 
-const mode = process.argv[2] === "uninstall" ? "Uninstall" : "Install"
+const modes = {
+  install: "Install",
+  uninstall: "Uninstall",
+  update: "Update",
+}
+const mode = modes[process.argv[2]] ?? "Install"
 const nonInteractive = process.argv.find((arg) => arg.startsWith("--target="))
 
 const options = [
