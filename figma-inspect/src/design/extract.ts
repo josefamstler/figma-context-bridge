@@ -1,14 +1,10 @@
 import type {
   AssetCandidate,
   DesignSummary,
-  FigmaComponentMeta,
-  FigmaFileResponse,
-  FigmaNode,
-  FigmaNodesResponse,
-  FigmaPaint,
   SimplifiedNode,
   UsedComponent,
 } from "./types.js"
+import type { FigmaComponentMeta, FigmaFileResponse, FigmaNode, FigmaNodesResponse, FigmaPaint } from "../figma/types.js"
 
 const SVG_TYPES = new Set(["VECTOR", "BOOLEAN_OPERATION", "STAR", "LINE", "ELLIPSE", "REGULAR_POLYGON"])
 

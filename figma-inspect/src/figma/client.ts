@@ -1,4 +1,5 @@
-import type { FigmaFileResponse, FigmaImagesResponse, FigmaNodesResponse, ScreenshotFormat } from "./types.js"
+import type { ScreenshotFormat } from "../screenshot/types.js"
+import type { FigmaFileResponse, FigmaImagesResponse, FigmaNodesResponse } from "./types.js"
 
 const BASE_URL = "https://api.figma.com/v1"
 
@@ -32,16 +33,6 @@ export class FigmaClient {
     return imageUrl
   }
 
-  async downloadImage(url: string): Promise<Buffer> {
-    const response = await fetch(url)
-    if (!response.ok) {
-      const body = await response.text()
-      throw new Error(`Image download failed ${response.status}: ${body}`)
-    }
-
-    return Buffer.from(await response.arrayBuffer())
-  }
-
   private async get<T>(path: string): Promise<T> {
     const response = await fetch(`${BASE_URL}${path}`, {
       headers: { "X-Figma-Token": this.token },
@@ -60,12 +51,4 @@ export class FigmaClient {
 
     return response.json() as Promise<T>
   }
-}
-
-export function getFigmaToken(): string {
-  const token = process.env.FIGMA_TOKEN ?? process.env.FIGMA_API_KEY
-  if (!token) {
-    throw new Error("FIGMA_TOKEN is required. Add it to ~/.config/figma-inspect/env first.")
-  }
-  return token
 }
